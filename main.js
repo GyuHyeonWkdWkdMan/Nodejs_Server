@@ -14,7 +14,7 @@ function templateHTML(title, list, body) {
     <body>
       <h1><a href="/">WEB2</a></h1>
       ${list}
-      <a href="/create">create</a>
+      <a href="/create">create</a> <a href="/update>update</a>
       ${body}
     </body>
   </html>
@@ -88,11 +88,11 @@ var app = http.createServer(function (request, response) {
       var post = qs.parse(body);
       var title = post.title;
       var description = post.description;
-      console.log(title);
-      console.log(description);
+      fs.writeFile(`data/${title}`, description, "utf8", function (err) {
+        response.writeHead(302, { location: `/?id=${title}` });
+        response.end();
+      });
     });
-    response.writeHead(200);
-    response.end("success");
   } else {
     response.writeHead(404);
     response.end("Not found");
